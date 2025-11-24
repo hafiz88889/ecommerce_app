@@ -1,6 +1,8 @@
+import 'package:ecommerce_app/app/route/app_path.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 
 class RegPageView extends StatefulWidget {
@@ -186,7 +188,9 @@ class _RegPageViewState extends State<RegPageView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text('Already have an account?'),
-                        TextButton(onPressed: () => Navigator.of(context).maybePop(), child: const Text('Sign in')),
+                        TextButton(onPressed: () {
+                          context.push(Routes.LOGIN_VIEW);
+                        }, child: const Text('Sign in')),
                       ],
                     ),
 
