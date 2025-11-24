@@ -4,6 +4,5 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegBloc extends Bloc<AuthReg, RegPageState>{
   RegBloc():super(RegPageState()){
-
   }
 }

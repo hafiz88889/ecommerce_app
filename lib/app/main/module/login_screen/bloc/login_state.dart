@@ -1,10 +1,35 @@
 import 'package:equatable/equatable.dart';
 
-enum LoginStatus{initial, loading, success, error, odData}
+import '../../../core/model/request_body.dart';
 
-class LogIngState extends Equatable{
+enum LogInStatus{initial,loading,success,error,onData}
+class LogInState extends Equatable{
+  final LogInStatus logInStatus;
+  final RequestBody? requestBody;
+  final int? totalCount;
+  final String? error;
+
+  const LogInState({this.logInStatus = LogInStatus.initial,
+    this.requestBody,
+    this.totalCount,
+    this.error});
+
+
+  LogInState copyWith({
+    LogInStatus? logInStatus,
+    RequestBody? requestBody,
+    int? totalCount,
+    String? error,
+  }){
+    return LogInState(
+      logInStatus: logInStatus?? this.logInStatus,
+      requestBody:  requestBody?? this.requestBody,
+      totalCount: totalCount?? this.totalCount,
+      error:  error?? this.error,
+    );
+  }
+
   @override
   // TODO: implement props
-  List<Object?> get props => [];
-
+  List<Object?> get props => [logInStatus,requestBody,totalCount,error];
 }
