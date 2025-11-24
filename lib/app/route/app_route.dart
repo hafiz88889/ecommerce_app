@@ -24,6 +24,15 @@ class AppRouter{
           );
         },
       ),
+      GoRoute(
+        path: Routes.REG_SCREEN,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context)=>RegBloc(),
+            child: const RegPageView(),
+          );
+        },
+      ),
     ]
   );
 }
