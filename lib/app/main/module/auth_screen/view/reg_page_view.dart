@@ -37,12 +37,22 @@ class _RegPageViewState extends State<RegPageView> {
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
+    if (!_agreeTos) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please accept Terms & Conditions')),
+      );
+      return;
+    }
+
+    setState(() => _loading = true);
     context.read<AuthBloc>().add(
       AuthSignUpEvent(
         password: _passwordController.text.trim(),
         email: _emailController.text.trim(),
       ),
     );
+    setState(() => _loading = false);
+
     _emailController.clear();
     _passwordController.clear();
   }

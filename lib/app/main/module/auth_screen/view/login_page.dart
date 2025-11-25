@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc.dart';
 
+
 class LoginPageView extends StatefulWidget {
   const LoginPageView({Key? key}) : super(key: key);
 
@@ -34,14 +35,13 @@ class _LoginPageViewState extends State<LoginPageView> {
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    context.read<AuthBloc>().add(
-      AuthLogInEvent(
-        password: _passwordController.text.trim(),
-        email: _emailController.text.trim(),
-      ),
-    );
-    _emailController.clear();
-    _passwordController.clear();
+
+    setState(() => _loading = true);
+    // Simulate a network call / registration process
+context.read<AuthBloc>().add(AuthLogInEvent(password: _passwordController.text.trim(), email: _emailController.text.trim()));
+    setState(() => _loading = false);
+_passwordController.clear();
+_emailController.clear();
   }
 
   @override
@@ -50,31 +50,26 @@ class _LoginPageViewState extends State<LoginPageView> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthAuthenticate) {
+      body:BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state){
+          if(state is AuthAuthenticate){
             context.push(Routes.HOME_PAGE_VIEW);
-          } else if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.msg)));
+          }else if(state is AuthError){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
           }
         },
-        builder: (context, state) {
-          return SafeArea(
+        builder: (context, state){
+          return  SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 50,),
                   Center(
                     child: Text(
                       'LogIn',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
                     ),
                   ),
                   const SizedBox(height: 18),
@@ -89,13 +84,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                           controller: _emailController,
                           label: 'Email',
                           hint: 'you@example.com',
-                          validator: (s) =>
-                              (s == null ||
-                                  !RegExp(
-                                    r"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-                                  ).hasMatch(s))
-                              ? 'Enter a valid email'
-                              : null,
+                          validator: (s) => (s == null || !RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+$").hasMatch(s)) ? 'Enter a valid email' : null,
                           prefix: Icons.email,
                           keyboardType: TextInputType.emailAddress,
                         ),
@@ -104,20 +93,12 @@ class _LoginPageViewState extends State<LoginPageView> {
                           controller: _passwordController,
                           label: 'Password',
                           hint: 'At least 8 characters',
-                          validator: (s) => (s == null || s.length < 8)
-                              ? 'Password must be at least 8 characters'
-                              : null,
+                          validator: (s) => (s == null || s.length < 8) ? 'Password must be at least 8 characters' : null,
                           prefix: Icons.lock,
                           obscureText: _obscurePassword,
                           suffix: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () => setState(
-                              () => _obscurePassword = !_obscurePassword,
-                            ),
+                            icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                            onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -125,25 +106,17 @@ class _LoginPageViewState extends State<LoginPageView> {
                           children: [
                             Checkbox(
                               value: _agreeTos,
-                              onChanged: (v) =>
-                                  setState(() => _agreeTos = v ?? false),
+                              onChanged: (v) => setState(() => _agreeTos = v ?? false),
                             ),
                             Expanded(
                               child: GestureDetector(
-                                onTap: () =>
-                                    setState(() => _agreeTos = !_agreeTos),
+                                onTap: () => setState(() => _agreeTos = !_agreeTos),
                                 child: RichText(
                                   text: const TextSpan(
                                     style: TextStyle(color: Colors.black87),
                                     children: [
                                       TextSpan(text: 'I agree to the '),
-                                      TextSpan(
-                                        text: 'Terms & Conditions',
-                                        style: TextStyle(
-                                          color: Colors.indigo,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
+                                      TextSpan(text: 'Terms & Conditions', style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.w600)),
                                     ],
                                   ),
                                 ),
@@ -160,23 +133,12 @@ class _LoginPageViewState extends State<LoginPageView> {
                             onPressed: _loading ? null : _submit,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               elevation: 4,
                             ),
                             child: _loading
-                                ? const CircularProgressIndicator(
-                                    color: Colors.white,
-                                  )
-                                : const Text(
-                                    'Create Account',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                ? const CircularProgressIndicator(color: Colors.white)
+                                : const Text('Create Account', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,color: Colors.white)),
                           ),
                         ),
 
@@ -192,6 +154,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                         //     Expanded(child: Divider()),
                         //   ],
                         // ),
+
                         const SizedBox(height: 12),
 
                         // Row(
@@ -202,16 +165,15 @@ class _LoginPageViewState extends State<LoginPageView> {
                         //     _socialButton(icon: Icons.apple, label: 'Apple', onTap: () {}),
                         //   ],
                         // ),
+
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text("Dont't have Account"),
-                            TextButton(
-                              onPressed: () {
-                                context.push(Routes.REG_SCREEN);
-                              },
-                              child: const Text('Sign Up'),
-                            ),
+                            TextButton(onPressed: () {
+                              context.push(Routes.REG_SCREEN);
+                            }, child: const Text('Sign Up')),
                           ],
                         ),
 
@@ -224,7 +186,7 @@ class _LoginPageViewState extends State<LoginPageView> {
             ),
           );
         },
-      ),
+      )
     );
   }
 
@@ -248,20 +210,13 @@ class _LoginPageViewState extends State<LoginPageView> {
         hintText: hint,
         prefixIcon: prefix != null ? Icon(prefix) : null,
         suffixIcon: suffix,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 18,
-        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
 
-  Widget _socialButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
+  Widget _socialButton({required IconData icon, required String label, required VoidCallback onTap}) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
