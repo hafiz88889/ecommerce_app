@@ -1,31 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+class AuthRepository{
+  final _authRepository = FirebaseAuth.instance;
 
-class AuthRepository {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  // write Function
+Future<void> signUp({required String email, required String password})async {
+  try{
+    FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
 
-  Future<UserCredential> signIn({
-    required String email,
-    required String password,
-  }) async {
-    return await _firebaseAuth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
   }
-
-  Future<UserCredential> signUp({
-    required String email,
-    required String password,
-  }) async {
-    return await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  on FirebaseAuthException catch (e){
+    if(e.code=="Week Password"){
+      throw Exception("This Password to week");
+    }
   }
-
-  Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+  catch(e){
+    throw Exception(e.toString());
   }
+}
 }
