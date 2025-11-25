@@ -7,7 +7,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
   final AuthRepository authRepository;
   AuthBloc(this.authRepository):super(AuthInit()){
 
-    on<AuthLogInEvent>((event, emit)async{
+    on<AuthSignIn>((event, emit)async{
       emit(AuthLoading());
       try{
         final user= await authRepository.signIn(email: event.email, password: event.password);
@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
     on<AuthSignUpEvent>((event, emit)async{
       emit(AuthLoading());
       try{
-        final user= await authRepository.signUp(email: event.email, password: event.password);
+        final user= await authRepository.signUp(email: event.email, password: event.password,name: event.name);
         emit(AuthAuthenticate(uid: user!.uid, email: user.email??""));
       }catch(e){
         emit(AuthError(msg: e.toString()));

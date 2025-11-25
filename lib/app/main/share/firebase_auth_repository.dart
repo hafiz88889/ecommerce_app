@@ -15,7 +15,7 @@ Future<User?> signIn({required String email, required String password})async {
    return result.user;
 }
   // write Function for SignUp
-  Future<User?> signUp({required String email, required String password})async {
+  Future<User?> signUp({required String name ,required String email, required String password})async {
     final result = await _authRepository.createUserWithEmailAndPassword(email: email, password: password);
     return result.user;
   }

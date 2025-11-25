@@ -38,7 +38,7 @@ class _LoginPageViewState extends State<LoginPageView> {
 
     setState(() => _loading = true);
     // Simulate a network call / registration process
-context.read<AuthBloc>().add(AuthLogInEvent(password: _passwordController.text.trim(), email: _emailController.text.trim()));
+context.read<AuthBloc>().add(AuthSignIn(password: _passwordController.text.trim(), email: _emailController.text.trim()));
     setState(() => _loading = false);
 _passwordController.clear();
 _emailController.clear();

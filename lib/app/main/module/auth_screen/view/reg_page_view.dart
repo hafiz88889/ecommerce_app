@@ -47,12 +47,13 @@ class _RegPageViewState extends State<RegPageView> {
     setState(() => _loading = true);
     context.read<AuthBloc>().add(
       AuthSignUpEvent(
+        name: _nameController.text.trim(),
         password: _passwordController.text.trim(),
         email: _emailController.text.trim(),
       ),
     );
     setState(() => _loading = false);
-
+    _nameController.clear();
     _emailController.clear();
     _passwordController.clear();
   }
