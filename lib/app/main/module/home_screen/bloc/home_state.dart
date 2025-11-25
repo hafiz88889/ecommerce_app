@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-enum RegPageStatus{initial, success, error, onData,loading}
+enum HomeStatus{initial, success, loading, error}
 
-class RegPageState extends Equatable{
+class HomeState extends Equatable{
   @override
   // TODO: implement props
   List<Object?> get props => [];

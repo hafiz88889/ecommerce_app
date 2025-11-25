@@ -1,7 +1,9 @@
-import 'package:ecommerce_app/app/main/module/login_screen/bloc/login_bloc.dart';
-import 'package:ecommerce_app/app/main/module/login_screen/view/login_view.dart';
-import 'package:ecommerce_app/app/main/module/reg_screen/bloc/reg_bloc.dart';
-import 'package:ecommerce_app/app/main/module/reg_screen/view/reg_page_view.dart';
+
+import 'package:ecommerce_app/app/main/module/auth_screen/bloc/auth_bloc.dart';
+import 'package:ecommerce_app/app/main/module/auth_screen/view/login_page.dart';
+import 'package:ecommerce_app/app/main/module/auth_screen/view/reg_page_view.dart';
+import 'package:ecommerce_app/app/main/module/home_screen/bloc/home_bloc.dart';
+import 'package:ecommerce_app/app/main/module/home_screen/view/home_page_view.dart';
 import 'package:ecommerce_app/app/main/module/splash_screen/view/splash_page_view.dart';
 import 'package:ecommerce_app/app/main/share/firebase_auth_repository.dart';
 import 'package:ecommerce_app/app/route/app_path.dart';
@@ -22,7 +24,7 @@ class AppRouter{
         path: Routes.REG_SCREEN,
         builder: (context, state) {
           return BlocProvider(
-            create: (context)=>RegBloc(),
+            create: (context)=>AuthBloc(AuthRepository()),
             child: const RegPageView(),
           );
         },
@@ -31,8 +33,17 @@ class AppRouter{
         path: Routes.LOGIN_VIEW,
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => LoginBloc(authRepository: AuthRepository()),
-            child: const LoginPage(),
+            create: (context)=>AuthBloc(AuthRepository()),
+            child: const LoginPageView(),
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.HOME_PAGE_VIEW,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context)=>HomeBloc(),
+            child: const HomePageView(),
           );
         },
       ),
