@@ -20,6 +20,7 @@ class HomePageView extends StatelessWidget {
           },
           builder: (context, state) {
             return SafeArea(child: Column(children: [
+
               ElevatedButton(onPressed: (){
                 context.read<AuthBloc>().add(AuthLogOut() as AuthEvent);
               }, child: Text("LogOut"))
